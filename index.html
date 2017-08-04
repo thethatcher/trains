@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Choo Choo!</title>
+
+	<!-- Responsive Meta Tag -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+	<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+</head>
+<body>
+<div class="container">
+		<div class="jumbotron">
+			<h1 class="text-center">
+				Train Station
+			</h1>
+
+			<p>Chug-a-Chug-a Choo-Choo!
+			</p>
+
+		</div>
+
+		<!-- Current trains in a table -->
+		<div>
+			<table class="table table-striped" id="trainTable">
+				
+				<legend>Current Train Schedule:</legend>
+				<tbody id="trainTableBody">
+
+					<tr>
+						<th>Train Name</th>
+						<th>Destination</th>
+						<th>Frequency (min)</th>
+						<th>Next Arrival</th>
+						<th>Minutes to Departure</th>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+
+		<!-- Add new train -->
+		<div>
+			
+
+			<form>
+				<legend>Add Train</legend>
+
+				<div class="form-group">
+					<label for="trainName">Name</label>
+					<input type="input" class="form-control" id="name" placeholder="">
+				</div>
+
+				<div class="form-group">
+					<label for="role">Destination</label>
+					<input type="input" class="form-control" id="destination" placeholder="">
+				</div>
+
+				<div class="form-group">
+					<label for="startDate">First Train Time (HH:mm - military time)</label>
+					<input type="date" class="form-control" id="start" placeholder="">
+				</div>
+
+				<div class="form-group">
+					<label for="monthlyRate">Frequency</label>
+					<input type="number" class="form-control" id="frequency" placeholder="">
+				</div>
+
+				<button type="button" class="btn btn-default" id="addTrain">Submit</button>
+
+			</form>
+		</div>
+	</div> <!-- end container-->
+
+
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js" charset="utf-8"></script>
+	<!-- Link to Moment.js should go here -->
+	<script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+	<script type="text/javascript" src="assets/javascript/app.js"></script>
+</body>
+</html>

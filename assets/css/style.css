@@ -1,0 +1,15 @@
+.jumbotron{
+			text-align: center;
+			color: white;
+			background-image: url("../images/black_linen_v2.png");
+		}
+
+		legend{
+			background-color: #336DB4;
+			color: white;
+			padding: 15px;
+		}
+
+		.tableRowData{
+			font-weight: normal;
+		}
