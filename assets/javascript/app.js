@@ -15,17 +15,20 @@ var name, dest, freq, start, nextTime, minutes;
 
 
 db.ref().on("value", function(snap){
+	$("#trainTableBody").html("<tr><th>Train Name</th><th>Destination</th><th>Frequency (min)</th><th>Next Arrival</th><th>Minutes to Departure</th></tr>");
 	snap.forEach(function(childSnap){
 		console.log("snapshot value: ",childSnap.val());
+		name = childSnap.val().name;
+		dest = childSnap.val().destination;
+		freq = childSnap.val().frequency;
+		start = childSnap.val().startTime;
 		nextTime = calcNextTime(moment(start,"HH:mm"),moment.duration(freq,"minutes"));
 		minutes = 10;
-		name = childSnap.val().name;
-		dest = childSnap.val().dest;
-		freq = childSnap.val().freq;
+		
 		var tableRow = "<tr><th class='tableRowData'>" + name + 
 	      "</th><th class='tableRowData'>" + dest + 
 	      "</th><th class='tableRowData'>" + freq +
-	      "</th><th class='tableRowData'>" + nextTime.format("HH:mm") +
+	      "</th><th class='tableRowData'>" + nextTime.format("hh:mm A") +
 	      "</th><th class='tableRowData'>" + minutes +"</th>";
 	    $("#trainTableBody").append(tableRow);
 	})
@@ -44,14 +47,16 @@ function train(name,dest,freq,start){
 function calcNextTime(start, freq){
 	var rtn = moment();
 	if(start < rtn){
-		var timeSinceStart = start.diff(rtn,"minutes");
+		var timeSinceStart = rtn.diff(start,"minutes");
 		console.log("Start time has passed: ", start, rtn);
 		console.log("minutes passed: ", timeSinceStart);
+		rtn = moment().add(moment.duration(timeSinceStart % freq));
 	}
 	else{
 		console.log("Start time is coming up", start);
 		rtn = start;
 	}
+	console.log("return value: ", rtn);
 	return rtn;
 }
  
