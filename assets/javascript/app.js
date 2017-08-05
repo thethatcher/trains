@@ -11,7 +11,7 @@ firebase.initializeApp(config);
 
 var db = firebase.database();
 
-var name, dest, freq, start, nextTime, minutes;
+var name, dest, freq, start, nextTime, minutes, firstTrainMarker;
 
 
 db.ref().on("value", function(snap){
@@ -22,13 +22,13 @@ db.ref().on("value", function(snap){
 		dest = childSnap.val().destination;
 		freq = childSnap.val().frequency;
 		start = childSnap.val().startTime;
-		nextTime = calcNextTime(moment(start,"HH:mm"),moment.duration(freq,"minutes"));
-		minutes = 10;
+		nextTime = calcNextTime(moment(start,"HH:mm"),freq);
+		minutes = nextTime.diff(moment(),"minutes");
 		
 		var tableRow = "<tr><th class='tableRowData'>" + name + 
 	      "</th><th class='tableRowData'>" + dest + 
 	      "</th><th class='tableRowData'>" + freq +
-	      "</th><th class='tableRowData'>" + nextTime.format("hh:mm A") +
+	      "</th><th class='tableRowData'>" + nextTime.format("hh:mm A") + firstTrainMarker +
 	      "</th><th class='tableRowData'>" + minutes +"</th>";
 	    $("#trainTableBody").append(tableRow);
 	})
@@ -44,19 +44,23 @@ function train(name,dest,freq,start){
 	this.startTime = start;
 }
 
-function calcNextTime(start, freq){
+function calcNextTime(start, frq){
 	var rtn = moment();
-	if(start < rtn){
-		var timeSinceStart = rtn.diff(start,"minutes");
+	if(start < moment()){
+		var timeSinceStart = moment().diff(start,"minutes");
 		console.log("Start time has passed: ", start, rtn);
 		console.log("minutes passed: ", timeSinceStart);
-		rtn = moment().add(moment.duration(timeSinceStart % freq));
+		var tempcalc = frq - (timeSinceStart % frq);
+		console.log(start.format("HH:mm"),frq,tempcalc);
+		rtn = moment().add(moment.duration(tempcalc,"minutes"));
+		firstTrainMarker = "";
 	}
 	else{
 		console.log("Start time is coming up", start);
+		firstTrainMarker = " *";
 		rtn = start;
 	}
-	console.log("return value: ", rtn);
+	console.log("return value: ", rtn.format());
 	return rtn;
 }
  
